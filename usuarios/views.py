@@ -194,11 +194,27 @@ def reset_password_confirm(request, uid, token):
     try:
         uid_decoded = force_str(urlsafe_base64_decode(uid))
         user = Usuario.objects.get(pk=uid_decoded)
-    except:
+    except Exception as e:
+        from usuarios.models import EmailLog
+        EmailLog.objects.create(
+            destinatario='Desconocido',
+            asunto='Intento de restablecimiento de contraseña',
+            contenido=f"Token inválido: {uid} | {token}",
+            exito=False,
+            error=str(e)
+        )
         messages.error(request, "Enlace inválido.")
         return redirect('login')
 
     if not default_token_generator.check_token(user, token):
+        from usuarios.models import EmailLog
+        EmailLog.objects.create(
+            destinatario=user.email,
+            asunto='Token de restablecimiento inválido',
+            contenido=f"Token: {token}",
+            exito=False,
+            error='Token inválido o expirado'
+        )
         messages.error(request, "Este enlace ha expirado.")
         return redirect('login')
 
