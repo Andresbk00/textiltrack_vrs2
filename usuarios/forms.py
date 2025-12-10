@@ -22,7 +22,7 @@ class RegistroUsuarioForm(forms.ModelForm):
         if not re.search(r"[0-9]", password):
             raise ValidationError("La contraseña debe incluir un número.")
 
-        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
+        if not re.search(r"[\W_]", password):
             raise ValidationError("La contraseña debe incluir un carácter especial.")
 
         return password
