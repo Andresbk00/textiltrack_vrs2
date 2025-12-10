@@ -5,10 +5,14 @@ class Command(BaseCommand):
     help = 'Crea el usuario admin inicial'
 
     def handle(self, *args, **kwargs):
-        if not Usuario.objects.filter(username='gcamiloandres60').exists():
+        email = 'gcamiloandres60@gmail.com'
+        username = 'gcamiloandres60'
+        existe_email = Usuario.objects.filter(email=email).exists()
+        existe_username = Usuario.objects.filter(username=username).exists()
+        if not existe_email and not existe_username:
             Usuario.objects.create_user(
-                username='gcamiloandres60',
-                email='gcamiloandres60@gmail.com',
+                username=username,
+                email=email,
                 password='adminTemp2025',
                 rol='administrador',
                 aprobado=True,
@@ -19,4 +23,4 @@ class Command(BaseCommand):
             )
             self.stdout.write(self.style.SUCCESS('Usuario admin creado'))
         else:
-            self.stdout.write(self.style.WARNING('El usuario admin ya existe'))
+            self.stdout.write(self.style.WARNING('El usuario admin ya existe (por email o username)'))
