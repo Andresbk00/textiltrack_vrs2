@@ -228,7 +228,7 @@ def reset_password_confirm(request, uid, token):
             errores.append("La contraseña debe incluir una mayúscula.")
         if not re.search(r"[0-9]", new_password):
             errores.append("La contraseña debe incluir un número.")
-        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", new_password):
+        if not re.search(r"[\W_]", new_password):
             errores.append("La contraseña debe incluir un carácter especial.")
         if errores:
             for err in errores:
