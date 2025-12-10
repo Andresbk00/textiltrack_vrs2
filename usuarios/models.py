@@ -1,6 +1,17 @@
+from django.db import models
+# Log de correos enviados
+class EmailLog(models.Model):
+    destinatario = models.EmailField()
+    asunto = models.CharField(max_length=255)
+    contenido = models.TextField()
+    exito = models.BooleanField(default=False)
+    error = models.TextField(blank=True, null=True)
+    fch_envio = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.destinatario} | {self.asunto} | {self.fch_envio:%Y-%m-%d %H:%M}" 
 # usuarios/models.py
 from django.contrib.auth.models import AbstractUser
-from django.db import models
 
 ROLES = [
     ('administrador', 'Administrador'),
