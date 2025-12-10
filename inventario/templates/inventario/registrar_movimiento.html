@@ -1,0 +1,17 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Registrar Movimiento{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Registrar Movimiento</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="btn-blue" type="submit">Guardar</button>
+    </form>
+
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Movimientos de Inventario{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Movimientos de Inventario</h2>
+
+    <div style="text-align: right; margin-bottom: 20px;">
+        <a href="{% url 'inventario:registrar_movimiento' %}" class="btn-blue">➕ Registrar Movimiento</a>
+    </div>
+
+    <table class="tabla-usuarios">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Fecha</th>
+                <th>Responsable</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for m in movimientos %}
+            <tr>
+                <td>{{ m.producto }}</td>
+                <td>
+                    {% if m.tipo == "entrada" %}
+                        <span class="badge badge-green">Entrada</span>
+                    {% else %}
+                        <span class="badge badge-red">Salida</span>
+                    {% endif %}
+                </td>
+                <td>{{ m.cantidad }}</td>
+                <td>{{ m.fecha }}</td>
+                <td>{{ m.responsable }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+{% endblock %}
+

@@ -1,0 +1,17 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Pedido{% endblock %}
+
+{% block content %}
+<h2 class="title">Pedido #{{ pedido.id }}</h2>
+<p><strong>Cliente:</strong> {{ pedido.cliente.nombre }}</p>
+<p><strong>Notas:</strong> {{ pedido.notas }}</p>
+<p><strong>Estado:</strong> {{ pedido.estado }}</p>
+
+<h3>Productos</h3>
+<ul>
+    {% for d in pedido.detalles.all %}
+    <li>{{ d.producto.nombre }} — Cantidad: {{ d.cantidad }} — Precio: ${{ d.producto.precio }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

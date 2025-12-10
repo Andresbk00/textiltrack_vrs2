@@ -1,0 +1,28 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Crear Producto{% endblock %}
+
+{% block content %}
+<div class="panel-container form-card">
+
+    <h2 class="form-title">Crear Nuevo Producto</h2>
+
+    {% for message in messages %}
+        <p class="msg {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST" class="form-body">
+        {% csrf_token %}
+
+        <div class="form-grid">
+            {{ form.as_p }}
+        </div>
+
+        <button class="btn-blue btn-full" type="submit">Guardar Producto</button>
+    </form>
+
+    <div class="form-footer">
+        <a class="btn-outline" href="{% url 'inventario:lista_productos' %}">← Volver</a>
+    </div>
+
+</div>
+{% endblock %}

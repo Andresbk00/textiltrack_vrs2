@@ -1,0 +1,212 @@
+/* ============================================================
+   TEXTILTRACK – ESTILO CLARO CONSISTENTE
+   Tema: Azul claro + blanco profesional
+============================================================ */
+
+/* ------------------------
+   VARIABLES
+------------------------- */
+:root {
+    --azul-claro: #4c8bf5;
+    --azul-oscuro: #1f4e99;
+    --azul-fondo: #e9f1ff;
+    --gris-texto: #1f2d48;
+    --gris-suave: #eef2f7;
+    --blanco: #ffffff;
+
+    --verde: #16a34a;
+    --rojo: #dc2626;
+    --amarillo: #ffcc00;
+    --azul-badge: #2563eb;
+}
+
+/* ------------------------
+   RESET
+------------------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: var(--azul-fondo);
+    color: var(--gris-texto);
+}
+
+/* ------------------------
+   PANEL Y FORMULARIOS
+------------------------- */
+.panel-container,
+.home-box,
+form {
+    background-color: var(--blanco);
+    color: var(--gris-texto);
+    border-radius: 16px;
+    padding: 25px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+/* ------------------------
+   TABLAS
+------------------------- */
+.tabla, .tabla-usuarios, .admin-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 8px;
+}
+
+.tabla thead tr,
+.tabla-usuarios thead tr {
+    background-color: #e1eaff;
+    color: var(--gris-texto);
+    font-weight: bold;
+}
+
+.tabla tbody tr,
+.tabla-usuarios tbody tr {
+    background-color: #f8f9ff;
+    color: var(--gris-texto);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    transition: all 0.3s ease;
+}
+
+.tabla tbody tr td,
+.tabla-usuarios tbody tr td {
+    padding: 12px;
+}
+
+/* Links dentro de tablas */
+.tabla-usuarios tbody tr td a,
+.tabla-usuarios tbody tr td span {
+    color: var(--azul-claro);
+    font-weight: 600;
+}
+
+/* ------------------------
+   BADGES
+------------------------- */
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.badge-green { background-color: var(--verde); color: #fff; }
+.badge-red   { background-color: var(--rojo); color: #fff; }
+.badge-blue  { background-color: var(--azul-badge); color: #fff; }
+.badge-yellow{ background-color: var(--amarillo); color: #000; }
+
+/* ------------------------
+   FORMULARIOS
+------------------------- */
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    border: 1px solid #d1d9e6;
+    background-color: var(--gris-suave);
+    color: var(--gris-texto);
+    transition: 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--azul-claro);
+    box-shadow: 0 0 8px rgba(76,139,245,0.3);
+}
+
+/* Labels y títulos */
+label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.form-title {
+    text-align: center;
+    color: var(--azul-oscuro);
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* ------------------------
+   BOTONES
+------------------------- */
+.btn, .action-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-primary { background-color: var(--azul-claro); color: #fff; }
+.btn-green   { background-color: var(--verde); color: #fff; }
+.btn-red     { background-color: var(--rojo); color: #fff; }
+.btn-orange  { background-color: var(--amarillo); color: #000; }
+
+.btn-primary:hover { background-color: var(--azul-oscuro); }
+.btn-green:hover   { background-color: #13803d; }
+.btn-red:hover     { background-color: #b91c1c; }
+.btn-orange:hover  { background-color: #e6b800; }
+
+/* ------------------------
+   ALERTAS / MENSAJES
+------------------------- */
+.msg, .alert-message {
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-bottom: 12px;
+}
+
+.msg.success, .alert-message.success { background-color: var(--verde); color: #fff; }
+.msg.error,   .alert-message.error   { background-color: var(--rojo); color: #fff; }
+.msg.warning, .alert-message.warning { background-color: var(--amarillo); color: #000; }
+.msg.info,    .alert-message.info    { background-color: var(--azul-claro); color: #fff; }
+
+/* ------------------------
+   ROLES (TONOS DEFINIDOS)
+------------------------- */
+.rol-admin {
+    background-color: #1b1b1b; /* negro fuerte */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.rol-vendedor {
+    background-color: #2563eb; /* azul medio */
+    color: #ffffff;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.rol-aux {
+    background-color: #5dade2; /* azul claro */
+    color: #000000;
+    padding: 5px 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* ------------------------
+   OTROS DETALLES
+------------------------- */
+.panel-text { text-align: center; font-size: 17px; margin-bottom: 25px; color: var(--gris-texto); }
+.panel-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; }

@@ -1,0 +1,31 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Nuevo Cliente{% endblock %}
+
+{% block content %}
+
+<h2 class="title">Registrar Cliente</h2>
+
+<form method="POST" class="form">
+    {% csrf_token %}
+    
+    <label>Nombre</label>
+    <input type="text" name="nombre" required>
+
+    <label>Correo</label>
+    <input type="email" name="email">
+
+    <label>Teléfono</label>
+    <input type="text" name="telefono">
+
+    <label>Dirección</label>
+    <input type="text" name="direccion">
+
+    <label>Documento</label>
+    <input type="text" name="documento">
+
+    <button class="btn-blue btn-full">Guardar</button>
+</form>
+
+<a href="{% url 'ventas:lista_clientes' %}" class="btn-outline">← Volver</a>
+
+{% endblock %}

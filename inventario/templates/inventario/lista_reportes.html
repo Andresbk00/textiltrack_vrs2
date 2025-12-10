@@ -1,0 +1,31 @@
+{% extends 'usuarios/base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="form-title">Reportes de Productos Agotados</h2>
+
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Responsable</th>
+                <th>Motivo</th>
+                <th>Descripción</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for r in reportes %}
+            <tr>
+                <td>{{ r.producto.nombre }}</td>
+                <td>{{ r.responsable.email }}</td>
+                <td>{{ r.motivo }}</td>
+                <td>{{ r.descripcion|default:"(Sin descripción)" }}</td>
+                <td>{{ r.fecha|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

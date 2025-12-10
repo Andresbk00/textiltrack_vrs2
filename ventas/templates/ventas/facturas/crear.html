@@ -1,0 +1,54 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Crear Factura{% endblock %}
+
+{% block content %}
+<h2 class="title">Crear Factura</h2>
+
+<form method="POST" class="form">
+    {% csrf_token %}
+
+    <label>Cliente</label>
+    <select name="cliente" required>
+        <option value="">Seleccione</option>
+        {% for c in clientes %}
+        <option value="{{ c.id }}">{{ c.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Productos</label>
+
+    {% for p in productos %}
+        {% if p.stock == 0 %}
+            <div class="item agotado">
+                <input type="checkbox" disabled>
+                {{ p.nombre }} — <span style="color:red;">AGOTADO</span>
+                <input type="number" disabled placeholder="Cantidad">
+            </div>
+        {% else %}
+            <div class="item">
+                <input type="checkbox" name="producto" value="{{ p.id }}">
+                {{ p.nombre }} ({{ p.stock }} disponibles)
+                <input type="number" name="cantidad" min="1" placeholder="Cantidad">
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <button class="btn-blue btn-full">Crear Factura</button>
+</form>
+
+<a href="{% url 'panel_vendedor' %}" class="btn-outline">← Volver</a>
+
+<style>
+.agotado {
+    opacity: 0.55;
+    background: #eee;
+    pointer-events: none;
+    padding: 4px;
+    border-radius: 5px;
+}
+.item {
+    margin: 5px 0;
+}
+</style>
+
+{% endblock %}

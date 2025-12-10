@@ -1,0 +1,26 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Editar Producto{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Editar producto</h2>
+
+    {% for message in messages %}
+        <p class="msg {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button class="btn-blue" type="submit">Actualizar</button>
+    </form>
+
+    <p style="text-align:center; margin-top:15px;">
+        <a class="btn-outline" href="{% url 'inventario:lista_productos' %}">← Volver</a>
+    </p>
+
+</div>
+{% endblock %}
+

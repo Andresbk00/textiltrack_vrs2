@@ -1,0 +1,61 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Registrar Pedido{% endblock %}
+
+{% block content %}
+<h2 class="title">Registrar Pedido</h2>
+
+<form method="POST" class="form">
+    {% csrf_token %}
+
+    <label>Cliente</label>
+    <select name="cliente" required>
+        <option value="">Seleccione</option>
+        {% for c in clientes %}
+        <option value="{{ c.id }}">{{ c.nombre }}</option>
+        {% endfor %}
+    </select>
+
+    <label>Productos</label>
+
+    {% for p in productos %}
+        {% if p.stock == 0 %}
+            <div class="item agotado">
+                <input type="checkbox" disabled>
+                {{ p.nombre }} — <span style="color:red;">AGOTADO</span>
+                <input type="number" disabled placeholder="Cantidad">
+            </div>
+        {% else %}
+            <div class="item">
+                <input type="checkbox" name="producto_ids" value="{{ p.id }}">
+                {{ p.nombre }} ({{ p.stock }} disponibles)
+
+                <input type="number"
+                       name="cantidad_{{ p.id }}"
+                       min="1"
+                       placeholder="Cantidad">
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <label>Notas</label>
+    <textarea name="notas" rows="3"></textarea>
+
+    <button class="btn-blue btn-full">Registrar</button>
+</form>
+
+<a href="{% url 'panel_vendedor' %}" class="btn-outline">← Volver</a>
+
+<style>
+.agotado {
+    opacity: 0.55;
+    background: #eee;
+    pointer-events: none;
+    padding: 4px;
+    border-radius: 5px;
+}
+.item {
+    margin: 5px 0;
+}
+</style>
+
+{% endblock %}

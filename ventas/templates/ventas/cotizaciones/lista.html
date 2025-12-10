@@ -1,0 +1,28 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Cotizaciones{% endblock %}
+
+{% block content %}
+<h2 class="title">Cotizaciones</h2>
+<table class="tabla">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Valor Estimado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for c in cotizaciones %}
+        <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.cliente.nombre }}</td>
+            <td>${{ c.valor_estimado }}</td>
+            <td>
+                <a href="{% url 'ventas:detalle_cotizacion' c.pk %}" class="btn-blue-sm">Ver</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

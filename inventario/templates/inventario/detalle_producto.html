@@ -1,0 +1,97 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Detalle del Producto{% endblock %}
+
+{% block content %}
+
+<div class="panel-container" style="padding: 20px; max-width: 800px; margin: auto;">
+
+    <h2 class="form-title" style="margin-bottom: 20px;">Detalle del Producto</h2>
+
+    <div style="
+        background: #fff;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 3px 12px rgba(0,0,0,0.08);
+    ">
+
+        <h3 style="margin-bottom: 10px;">{{ producto.nombre }}</h3>
+
+        <p><strong>Categoría:</strong> {{ producto.categoria }}</p>
+        <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+        <p><strong>Stock:</strong> {{ producto.stock }}</p>
+
+        <p>
+            <strong>Estado:</strong>
+            {% if producto.estado == "baja" %}
+                <span style="color:#dc2626; font-weight:bold;">Dado de baja</span>
+            {% else %}
+                <span style="color:#16a34a; font-weight:bold;">Activo</span>
+            {% endif %}
+        </p>
+
+        <hr style="margin:20px 0;">
+
+        <!-- Botones de acción -->
+        <div style="display:flex; gap:15px; flex-wrap:wrap;">
+
+            <a href="{% url 'inventario:editar_producto' producto.pk %}"
+               class="btn-blue">
+                ✏️ Editar
+            </a>
+
+            {% if producto.estado != "baja" %}
+            <a href="{% url 'inventario:dar_baja_producto' producto.pk %}"
+               class="btn-warning-outline">
+                ⚠️ Dar de baja
+            </a>
+            {% endif %}
+
+            <form method="POST" action="{% url 'inventario:eliminar_producto' producto.pk %}" style="display:inline;">
+                {% csrf_token %}
+                <button class="btn-red">🗑️ Eliminar</button>
+            </form>
+
+        </div>
+
+        <div style="margin-top: 25px;">
+            <a href="{% url 'inventario:lista_productos' %}" class="btn-gray">
+                ← Volver a la lista
+            </a>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+.btn-blue,
+.btn-warning-outline,
+.btn-red,
+.btn-gray {
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.btn-blue { background: #1d4ed8; color: white; }
+.btn-blue:hover { background: #2563eb; }
+
+.btn-warning-outline {
+    border: 2px solid #f59e0b;
+    color: #b45309;
+    background: white;
+}
+.btn-warning-outline:hover {
+    background: #fef3c7;
+}
+
+.btn-red { background: #dc2626; color: white; border: none; }
+.btn-red:hover { background: #b91c1c; }
+
+.btn-gray { background: #e5e7eb; color: #374151; }
+.btn-gray:hover { background: #d1d5db; }
+</style>
+
+{% endblock %}

@@ -1,0 +1,106 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Inventario - Productos{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Inventario — Productos</h2>
+
+    <!-- Botones superiores -->
+    <div style="display:flex; justify-content:space-between; margin-bottom: 20px;">
+        <a href="{% url 'inventario:lista_bajas' %}" class="btn-warning-soft">
+            📦 Productos dados de baja
+        </a>
+
+        <a href="{% url 'inventario:crear_producto' %}" class="btn-blue">
+            ➕ Nuevo Producto
+        </a>
+    </div>
+<!-- Filtro por categoría -->
+<form method="get" style="margin-bottom:20px; display:flex; gap:10px; align-items:center;">
+
+    <select name="categoria" class="form-control" style="padding:6px;">
+        <option value="">Todas las categorías</option>
+
+        {% for c in categorias %}
+            <option value="{{ c.nombre }}" {% if categoria_seleccionada == c.nombre %}selected{% endif %}>
+                {{ c.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit" class="btn-blue">Filtrar</button>
+
+    {% if categoria_seleccionada %}
+        <a href="{% url 'inventario:lista_productos' %}" class="btn-warning-soft">
+            Quitar filtro
+        </a>
+    {% endif %}
+</form>
+
+    <!-- Tabla -->
+    <table class="tabla-usuarios">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for p in productos %}
+            {% url 'inventario:detalle_producto' p.pk as link_detalle %}
+<tr 
+    onclick="window.location.href='{{ link_detalle }}'"
+    style="cursor:pointer; transition:0.15s;"
+    onmouseover="this.style.background='#eef5ff';"
+    onmouseout="this.style.background='';"
+>
+
+
+            
+
+                <!-- Nombre -->
+                <td>
+                    {{ p.nombre }}
+
+                    {% if p.estado == "baja" %}
+                        <span style="color:red; font-size:12px; font-weight:bold;">
+                            (Dado de baja)
+                        </span>
+                    {% endif %}
+                </td>
+
+                <!-- Categoría -->
+                <td>{{ p.categoria }}</td>
+
+                <!-- Precio -->
+                <td>${{ p.precio }}</td>
+
+                <!-- Stock -->
+                <td>
+                    {{ p.stock }}
+
+                    {% if p.esta_agotado %}
+                        <span style="color:red; font-weight:bold;"> — Agotado</span>
+                    {% elif p.esta_bajo %}
+                        <span style="color:orange; font-weight:bold;"> — Stock bajo</span>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4" style="text-align:center; padding:20px;">
+                    No hay productos registrados.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+{% endblock %}

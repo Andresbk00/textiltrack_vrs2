@@ -1,0 +1,14 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Factura{% endblock %}
+
+{% block content %}
+<h2 class="title">Factura #{{ factura.id }}</h2>
+<p><strong>Cliente:</strong> {{ factura.cliente.nombre }}</p>
+<p><strong>Fecha:</strong> {{ factura.fecha }}</p>
+
+<p><strong>Descripción:</strong><br>{{ factura.descripcion|linebreaks }}</p>
+<p><strong>Monto total:</strong> ${{ factura.monto }}</p>
+
+<a href="{% url 'ventas:descargar_factura' factura.pk %}" class="btn-blue">⬇ Descargar PDF</a>
+{% endblock %}
+

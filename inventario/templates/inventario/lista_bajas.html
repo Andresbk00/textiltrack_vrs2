@@ -1,0 +1,32 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Productos dados de baja{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Productos dados de baja</h2>
+
+    <table class="tabla-usuarios">
+        <thead>
+            <tr>
+                <th>Producto</th>
+                <th>Motivo</th>
+                <th>Responsable</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for b in bajas %}
+            <tr>
+                <td>{{ b.producto.nombre }}</td>
+                <td>{{ b.motivo }}</td>
+                <td>{{ b.responsable.email }}</td>
+                <td>{{ b.fecha|date:"d/m/Y H:i" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

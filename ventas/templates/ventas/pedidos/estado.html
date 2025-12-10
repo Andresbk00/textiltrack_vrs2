@@ -1,0 +1,23 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Actualizar Estado{% endblock %}
+
+{% block content %}
+
+<h2 class="title">Actualizar Estado del Pedido</h2>
+
+<form method="POST" class="form">
+    {% csrf_token %}
+
+    <label>Estado</label>
+    <select name="estado">
+        <option value="pendiente">Pendiente</option>
+        <option value="proceso">En proceso</option>
+        <option value="completado">Completado</option>
+        <option value="entregado">Entregado</option>
+        <option value="cancelado">Cancelado</option>
+    </select>
+
+    <button class="btn-blue btn-full">Guardar</button>
+</form>
+
+{% endblock %}

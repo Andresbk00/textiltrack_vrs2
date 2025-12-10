@@ -1,0 +1,22 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body { font-family: DejaVu Sans; font-size: 12px; }
+        h1 { text-align: center; }
+        pre { font-family: DejaVu Sans; }
+    </style>
+</head>
+<body>
+<h1>Cotización #{{ cot.id }}</h1>
+<p><strong>Cliente:</strong> {{ cot.cliente.nombre }}</p>
+<p><strong>Fecha:</strong> {{ cot.fecha }}</p>
+
+<h3>Detalle:</h3>
+<pre>{{ cot.detalle }}</pre>
+<h3>Valor estimado:</h3>
+<p>${{ cot.valor_estimado }}</p>
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+
+    <h2 class="form-title">Crear Reporte - Producto Agotado</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="card" style="padding:25px;">
+            <p><strong>Motivo:</strong> Producto agotado</p>
+            <p><strong>Destinatario:</strong> Administrador</p>
+            <p><strong>Responsable:</strong> {{ request.user.email }}</p>
+
+            <label>Producto agotado</label>
+            {{ form.producto }}
+
+            <label style="display:block;margin-top:10px;">Descripción adicional</label>
+            {{ form.descripcion }}
+
+            <button class="btn btn-primary" style="margin-top:20px;">Enviar Reporte</button>
+        </div>
+
+    </form>
+
+</div>
+{% endblock %}

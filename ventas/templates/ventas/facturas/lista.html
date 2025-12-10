@@ -1,0 +1,28 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Facturas{% endblock %}
+
+{% block content %}
+<h2 class="title">Facturas</h2>
+<table class="tabla">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cliente</th>
+            <th>Monto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for f in facturas %}
+        <tr>
+            <td>{{ f.id }}</td>
+            <td>{{ f.cliente.nombre }}</td>
+            <td>${{ f.monto }}</td>
+            <td>
+                <a href="{% url 'ventas:detalle_factura' f.pk %}" class="btn-blue-sm">Ver</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

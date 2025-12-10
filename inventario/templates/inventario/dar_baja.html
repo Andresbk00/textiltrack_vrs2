@@ -1,0 +1,20 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Dar de baja{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Dar de baja: {{ producto.nombre }}</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Motivo de la baja:</label>
+        <textarea name="motivo" required style="width:100%; height:120px;"></textarea>
+
+        <br><br>
+        <button class="btn-red">Confirmar baja</button>
+    </form>
+
+</div>
+{% endblock %}

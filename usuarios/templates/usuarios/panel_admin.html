@@ -1,0 +1,72 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Panel Administrador{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <!-- SALUDO -->
+    {% if saludo %}
+        <p class="panel-saludo">{{ saludo }}</p>
+    {% endif %}
+
+    <h2>Panel del Administrador</h2>
+
+    {% for message in messages %}
+        <p class="msg {{ message.tags }}">{{ message }}</p>
+    {% endfor %}
+
+    <h3 style="margin-top: 20px;">Gestión de Usuarios</h3>
+
+    <table class="tabla-usuarios">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th>Email Verificado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for u in usuarios %}
+            <tr>
+                <td>{{ u.id }}</td>
+                <td>{{ u.first_name }} {{ u.last_name }}</td>
+                <td>{{ u.email }}</td>
+                <td>{{ u.rol|title }}</td>
+                <td>{% if u.is_active %}Activo{% else %}Desactivado{% endif %}</td>
+                <td>{% if u.email_verificado %}✔ Verificado{% else %}✖ No verificado{% endif %}</td>
+                <td class="acciones-col">
+                    {% if not u.aprobado and u.email_verificado %}
+                    <form method="POST" action="{% url 'aprobar_usuario' u.id %}">
+                        {% csrf_token %}
+                        <button class="btn-green">Aprobar</button>
+                    </form>
+                    {% endif %}
+
+                    {% if u.is_active %}
+                    <form method="POST" action="{% url 'desactivar_usuario' u.id %}">
+                        {% csrf_token %}
+                        <button class="btn-orange">Desactivar</button>
+                    </form>
+                    {% else %}
+                    <form method="POST" action="{% url 'reactivar_usuario' u.id %}">
+                        {% csrf_token %}
+                        <button class="btn-blue">Reactivar</button>
+                    </form>
+                    {% endif %}
+
+                    <form method="POST" action="{% url 'eliminar_usuario' u.id %}">
+                        {% csrf_token %}
+                        <button class="btn-red">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}

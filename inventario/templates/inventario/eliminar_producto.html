@@ -1,0 +1,24 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Eliminar Producto{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Eliminar Producto</h2>
+
+    <p style="margin-bottom: 20px; font-size:16px;">
+        ¿Estás seguro de que deseas eliminar el producto
+        <strong>{{ producto.nombre }}</strong>?
+    </p>
+
+    <form method="POST" style="text-align:center;">
+        {% csrf_token %}
+        <button class="btn-red" type="submit">Eliminar definitivamente</button>
+        <a href="{% url 'inventario:lista_productos' %}" class="btn-blue" style="margin-left:10px;">
+            Cancelar
+        </a>
+    </form>
+
+</div>
+{% endblock %}
+

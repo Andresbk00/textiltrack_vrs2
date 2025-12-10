@@ -1,0 +1,88 @@
+/* =======================
+   LAYOUT GENERAL
+======================= */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+    background: #f5f6fa;
+}
+
+/* =======================
+   SIDEBAR OSCURO
+======================= */
+
+.sidebar {
+    width: 240px;
+    background: #111827;     /* Azul oscuro grisáceo */
+    color: white;
+    padding: 20px 0;
+    position: fixed;
+    height: 100vh;
+}
+
+.sidebar-header {
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #1f2937;
+}
+
+.sidebar-header h2 {
+    font-size: 20px;
+    margin: 0;
+    color: #38bdf8; /* celeste */
+}
+
+.sidebar-menu {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-section {
+    margin: 10px 20px 4px;
+    opacity: .5;
+    font-size: 12px;
+}
+
+/* BOTONES DEL SIDEBAR */
+.sidebar .item {
+    color: #e5e7eb;
+    padding: 12px 20px;
+    text-decoration: none;
+    transition: 0.2s;
+}
+
+.sidebar .item:hover {
+    background: #1f2937;
+    padding-left: 30px;
+    color: #fff;
+}
+
+.item-red {
+    color: #f87171 !important;
+}
+
+.item-red:hover {
+    background: #7f1d1d !important;
+    color: white !important;
+}
+
+
+/* =======================
+   CONTENIDO
+======================= */
+
+.main {
+    margin-left: 240px;
+    padding: 25px;
+    width: calc(100% - 240px);
+}
+
+.content {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.08);
+}
+

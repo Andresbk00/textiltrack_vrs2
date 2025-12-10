@@ -1,0 +1,77 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Inventario - Productos{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <h2>Inventario — Productos</h2>
+
+    <!-- === FILTRO POR CATEGORÍA === -->
+    <form method="GET" style="margin-bottom: 20px; display:flex; gap:10px; align-items:center;">
+        
+        <select name="categoria" class="input-select">
+            <option value="">Todas las categorías</option>
+
+            {% for c in categorias %}
+                <option value="{{ c.id }}" {% if request.GET.categoria == c.id|stringformat:"s" %}selected{% endif %}>
+                    {{ c.nombre }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-blue">Filtrar</button>
+
+        {% if request.GET.categoria %}
+            <a href="{% url 'inventario:lista_productos_vendedor' %}" class="btn-red">
+                Quitar filtro
+            </a>
+        {% endif %}
+    </form>
+
+    <table class="tabla-usuarios">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Precio</th>
+                <th>Stock</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% for p in productos %}
+            <tr>
+
+                <!-- Nombre -->
+                <td>{{ p.nombre }}</td>
+
+                <!-- Categoría -->
+                <td>{{ p.categoria }}</td>
+
+                <!-- Precio -->
+                <td>${{ p.precio }}</td>
+
+                <!-- Stock -->
+                <td>
+                    {{ p.stock }}
+
+                    {% if p.esta_agotado %}
+                        <span style="background:#DC2626; color:white; padding:2px 8px; font-size:12px; border-radius:6px; margin-left:5px;">
+                            Agotado
+                        </span>
+
+                    {% elif p.esta_bajo %}
+                        <span style="background:#F59E0B; color:white; padding:2px 8px; font-size:12px; border-radius:6px; margin-left:5px;">
+                            Bajo stock
+                        </span>
+                    {% endif %}
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+
+    </table>
+
+</div>
+{% endblock %}

@@ -1,0 +1,243 @@
+{% extends 'usuarios/base.html' %}
+{% load static %}
+{% block content %}
+<div class="perfil-container">
+    <h2 class="perfil-title">Mi Perfil</h2>
+    
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <div class="perfil-card">
+        <form method="post" enctype="multipart/form-data" id="formFoto">
+            {% csrf_token %}
+            
+            <div class="perfil-foto-wrapper">
+                {% if user.foto_perfil %}
+                <img src="{{ user.foto_perfil.url }}" id="fotoPreview" class="perfil-foto" alt="Foto de perfil">
+                {% else %}
+                <img src="{% static 'img/default_user.png' %}" id="fotoPreview" class="perfil-foto" alt="Foto de perfil">
+                {% endif %}
+            </div>
+            
+            <div style="margin: 15px 0; text-align: center;">
+                <label for="id_foto_perfil" style="display: inline-block; background: #f3f4f6; border: 2px dashed #2563eb; color: #2563eb; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold;">
+                    📷 Seleccionar foto
+                </label>
+                <input type="file" name="foto_perfil" accept="image/*" id="id_foto_perfil" style="display: none;">
+            </div>
+            
+            <button type="submit" class="btn-guardar-foto" id="btnGuardar">Actualizar foto</button>
+            
+            <div id="progressBar" style="display: none; margin-top: 10px;">
+                <div style="background: #e5e7eb; border-radius: 10px; overflow: hidden; height: 8px;">
+                    <div id="progress" style="background: #2563eb; height: 100%; width: 0%; transition: width 0.3s;"></div>
+                </div>
+                <p style="text-align: center; margin-top: 5px; font-size: 14px; color: #666;">Subiendo imagen...</p>
+            </div>
+        </form>
+        
+        <div class="perfil-datos">
+            <h3 class="perfil-subtitle">Información de la cuenta</h3>
+            <p><span>Nombre:</span> {{ user.first_name }}</p>
+            <p><span>Apellido:</span> {{ user.last_name }}</p>
+            <p><span>Correo:</span> {{ user.email }}</p>
+            <p><span>Rol:</span> {{ user.rol }}</p>
+            <p><span>Estado:</span> {{ user.estado }}</p>
+            <p><span>Aprobado:</span> {{ user.aprobado|yesno:"Sí,No" }}</p>
+            <p><span>Fecha de creación:</span> {{ user.fecha_creacion|date:"d/m/Y – H:i" }}</p>
+        </div>
+    </div>
+</div>
+
+<script>
+// Variables
+const fotoInput = document.getElementById('id_foto_perfil');
+const fotoPreview = document.getElementById('fotoPreview');
+const btnGuardar = document.getElementById('btnGuardar');
+const formFoto = document.getElementById('formFoto');
+const progressBar = document.getElementById('progressBar');
+
+// Preview de la imagen
+fotoInput.addEventListener('change', function(){
+    if(this.files && this.files[0]){
+        const file = this.files[0];
+        
+        // Validar tipo
+        if(!file.type.startsWith('image/')){
+            alert('Por favor selecciona una imagen válida');
+            this.value = '';
+            return;
+        }
+        
+        // Mostrar tamaño
+        const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+        console.log('Tamaño de imagen:', sizeMB + 'MB');
+        
+        // Preview
+        const reader = new FileReader();
+        reader.onload = function(e){
+            fotoPreview.src = e.target.result;
+            btnGuardar.textContent = 'Guardar nueva foto (' + sizeMB + 'MB)';
+            btnGuardar.style.background = '#16a34a';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+// Al enviar el formulario
+formFoto.addEventListener('submit', function(e){
+    btnGuardar.textContent = 'Subiendo...';
+    btnGuardar.disabled = true;
+    progressBar.style.display = 'block';
+    
+    // Simular progreso (porque no podemos saber el progreso real en form submit)
+    let width = 0;
+    const interval = setInterval(() => {
+        width += 10;
+        document.getElementById('progress').style.width = width + '%';
+        if(width >= 90) clearInterval(interval);
+    }, 200);
+});
+
+// Auto-ocultar mensajes
+setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        alert.style.transition = 'opacity 0.5s';
+        alert.style.opacity = '0';
+        setTimeout(() => alert.remove(), 500);
+    });
+}, 5000);
+</script>
+
+<style>
+.perfil-container {
+    max-width: 650px;
+    margin: auto;
+    padding: 20px;
+}
+
+.perfil-title {
+    text-align: center;
+    font-size: 28px;
+    color: #2563eb;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 12px 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.alert-success {
+    background: #d1fae5;
+    color: #065f46;
+    border-left: 4px solid #10b981;
+}
+
+.alert-error, .alert-danger {
+    background: #fee2e2;
+    color: #991b1b;
+    border-left: 4px solid #ef4444;
+}
+
+.perfil-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+}
+
+.perfil-foto-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+
+.perfil-foto {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #2563eb;
+}
+
+.btn-guardar-foto {
+    display: block;
+    margin: 10px auto 0;
+    background: #2563eb;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+.btn-guardar-foto:hover {
+    background: #1e40af;
+}
+
+.btn-guardar-foto:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.perfil-datos {
+    margin-top: 30px;
+}
+
+.perfil-subtitle {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.perfil-datos p {
+    font-size: 16px;
+    background: #f7f9fc;
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.perfil-datos span {
+    font-weight: bold;
+    color: #111;
+}
+
+@media (max-width: 640px) {
+    .perfil-container {
+        padding: 15px;
+    }
+    
+    .perfil-card {
+        padding: 20px;
+    }
+    
+    .perfil-foto {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .perfil-datos p {
+        font-size: 14px;
+    }
+}
+</style>
+{% endblock %}

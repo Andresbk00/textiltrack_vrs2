@@ -1,0 +1,24 @@
+{% extends 'usuarios/base.html' %}
+{% block title %}Panel del Auxiliar{% endblock %}
+
+{% block content %}
+<div class="panel-container">
+
+    <!-- SALUDO -->
+    {% if saludo %}
+        <p class="panel-saludo">{{ saludo }}</p>
+    {% endif %}
+
+    <h2>Panel del Auxiliar</h2>
+    <p class="panel-text">
+        Controla inventario, actualiza stock y registra movimientos.
+    </p>
+
+    <div class="panel-actions">
+        <a class="btn-blue" href="{% url 'inventario:lista_productos' %}">Ver Productos</a>
+        <a class="btn-blue" href="{% url 'inventario:registrar_movimiento' %}">Registrar Movimiento</a>
+        <a class="btn-blue" href="{% url 'inventario:movimientos' %}">Historial de Movimientos</a>
+    </div>
+
+</div>
+{% endblock %}

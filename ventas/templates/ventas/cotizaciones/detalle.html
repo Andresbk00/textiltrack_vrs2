@@ -1,0 +1,14 @@
+{% extends "usuarios/base.html" %}
+{% block title %}Cotización{% endblock %}
+
+{% block content %}
+<h2 class="title">Cotización #{{ cot.id }}</h2>
+<p><strong>Cliente:</strong> {{ cot.cliente.nombre }}</p>
+<p><strong>Fecha:</strong> {{ cot.fecha }}</p>
+
+<h3>Detalle:</h3>
+<pre>{{ cot.detalle }}</pre>
+<p><strong>Valor estimado:</strong> ${{ cot.valor_estimado }}</p>
+
+<a href="{% url 'ventas:descargar_cotizacion' cot.pk %}" class="btn-blue">⬇ Descargar PDF</a>
+{% endblock %}

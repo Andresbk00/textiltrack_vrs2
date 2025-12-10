@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}TextilTrack{% endblock %}</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{% static 'css/estilos.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/theme.css' %}"> <!-- nuevo CSS para temas -->
+
+    <!-- META -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 🔥 PWA CONFIG -->
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+    <meta name="theme-color" content="#1e1e1e">
+
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("{% static 'service-worker.js' %}");
+        }
+    </script>
+    <!-- 🔥 FIN PWA -->
+</head>
+
+<body class="light-mode">
+
+
+<div class="layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        
+        <!-- Header -->
+        <div class="sidebar-header">
+            <h2>TextilTrack</h2>
+        </div>
+
+
+        <!-- MENU -->
+<nav class="sidebar-menu">
+    {% if user.is_authenticated %}
+        {% if user.rol == "administrador" %}
+            <a href="{% url 'panel_admin' %}" class="item">🏠 Panel Principal</a>
+            <p class="sidebar-section">Ventas</p>
+            <a href="{% url 'ventas:lista_clientes' %}" class="item">👤 Clientes</a>
+            <p class="sidebar-section">Inventario</p>
+            <a href="{% url 'inventario:lista_productos' %}" class="item">📦 Productos</a>
+            <a href="{% url 'inventario:lista_reportes' %}" class="item">📄 Reportes</a>
+
+
+        {% elif user.rol == "vendedor" %}
+            <a href="{% url 'panel_vendedor' %}" class="item">🏠 Panel Principal</a>
+            <p class="sidebar-section">Ventas</p>
+            <a href="{% url 'ventas:lista_clientes' %}" class="item">👤 Clientes</a>
+            <a href="{% url 'ventas:crear_cotizacion' %}" class="item">📝 Nueva Cotización</a>
+            <a href="{% url 'ventas:lista_cotizaciones' %}" class="item">📄 Ver Cotizaciones</a>
+            <a href="{% url 'ventas:crear_factura' %}" class="item">💵 Nueva Factura</a>
+            <a href="{% url 'ventas:lista_facturas' %}" class="item">📄 Ver Facturas</a>
+            <a href="{% url 'ventas:crear_pedido' %}" class="item">📦 Registrar Pedido</a>
+            <a href="{% url 'ventas:lista_pedidos' %}" class="item">📄 Ver Pedidos</a>
+            <p class="sidebar-section">Inventario</p>
+            <a href="{% url 'inventario:lista_productos_vendedor' %}" class="item">📦 Productos</a>
+
+        {% elif user.rol == "auxiliar" %}
+            <a href="{% url 'panel_aux' %}" class="item">🏠 Panel Principal</a>
+            <p class="sidebar-section">Ventas</p>
+            <a href="{% url 'ventas:lista_pedidos' %}" class="item">📄 Ver Pedidos</a>
+            <p class="sidebar-section">Inventario</p>
+            <a href="{% url 'inventario:lista_productos' %}" class="item">📦 Productos</a>
+            <a href="{% url 'inventario:movimientos' %}" class="item">🔄 Movimientos</a>
+            <a href="{% url 'inventario:crear_reporte_agotado' %}" class="item">⚠️ Reportar producto agotado</a>
+
+        {% endif %}
+
+        <!-- Enlace a perfil para todos los roles -->
+        <p class="sidebar-section">Cuenta</p>
+        <a href="{% url 'perfil' %}" class="item">👤 Mi Perfil</a>  <!-- <- ESTE ES EL NUEVO -->
+        <a href="{% url 'logout' %}" class="item item-red">🚪 Cerrar sesión</a>
+
+    {% else %}
+        <a href="{% url 'home' %}" class="item">🏠 Inicio</a>
+        <a href="{% url 'login' %}" class="item">Ingresar</a>
+    {% endif %}
+</nav>
+
+    </aside>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main">
+        <div class="content">
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+</div>
+
+<!-- Modal de alerta de sesión mejorado -->
+<div id="sessionModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+    background: rgba(0,0,0,0.6); z-index:9999; justify-content:center; align-items:center; transition: opacity 0.3s;">
+    <div style="background:#ffffff; padding:30px; border-radius:16px; max-width:450px; text-align:center; 
+                box-shadow:0 8px 25px rgba(0,0,0,0.3); animation: slideDown 0.4s ease-out;">
+        <h3 style="font-size:22px; margin-bottom:15px; color:#1f2937;">⏰ Sesión por expirar</h3>
+        <p style="font-size:16px; color:#4b5563; margin-bottom:25px;">Tu sesión expirará en 5 minutos. ¿Deseas mantenerla activa?</p>
+        <button id="extendSession" style="padding:12px 25px; border:none; border-radius:10px; background:#2563eb; color:white; cursor:pointer; font-weight:600; margin-right:10px; transition:0.3s;">
+            Mantener sesión
+        </button>
+        <button id="closeModal" style="padding:12px 25px; border:none; border-radius:10px; background:#dc2626; color:white; cursor:pointer; font-weight:600; transition:0.3s;">
+            Cerrar
+        </button>
+    </div>
+</div>
+
+<style>
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+#sessionModal.show {
+    display: flex !important;
+    opacity: 1;
+}
+#sessionModal.hide {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+#sessionModal button:hover {
+    opacity: 0.85;
+    transform: translateY(-1px);
+}
+</style>
+
+<script>
+const sessionDuration = 3600 * 1000; // 1 hora
+const warningTime = 5 * 60 * 1000;   // 5 minutos antes
+let warningShown = false;
+
+function showSessionModal() {
+    if (!warningShown) {
+        warningShown = true;
+        const modal = document.getElementById('sessionModal');
+        modal.classList.add('show');
+    }
+}
+
+function hideSessionModal() {
+    const modal = document.getElementById('sessionModal');
+    modal.classList.remove('show');
+    warningShown = false;
+}
+
+// Cerrar modal sin extender sesión
+document.getElementById('closeModal').addEventListener('click', () => {
+    hideSessionModal();
+});
+
+// Extender sesión
+document.getElementById('extendSession').addEventListener('click', () => {
+    fetch(window.location.href, { method: 'GET', credentials: 'same-origin' })
+    .then(() => {
+        hideSessionModal();
+        setTimeout(showSessionModal, sessionDuration - warningTime);
+    });
+});
+
+// Inicializar temporizador
+setTimeout(showSessionModal, sessionDuration - warningTime);
+</script>
+
+
+
+</body>
+</html>
