@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.core.mail import send_mail
+from usuarios.utils.email_sendgrid import send_email_sendgrid
 from django.views.decorators.http import require_POST
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
@@ -35,11 +35,10 @@ def web_register(request):
             link = f"{settings.SITE_URL}/verificar/{uid}/{token}/"
 
 
-            send_mail(
-                "Verificación de correo - TextilTrack",
-                f"Hola {user.first_name}, verifica tu correo aquí: {link}",
-                None,
-                [user.email],
+            send_email_sendgrid(
+                to_email=user.email,
+                subject="Verificación de correo - TextilTrack",
+                html_content=f"Hola {user.first_name}, verifica tu correo aquí: <a href='{link}'>{link}</a>"
             )
 
             messages.success(request, "Te enviamos un correo para verificar tu cuenta.")
@@ -176,11 +175,10 @@ def password_reset_request(request):
 
         reset_link = f"{settings.SITE_URL}/reset_password/{uid}/{token}/"
 
-        send_mail(
-            "Restablecer contraseña — TextilTrack",
-            f"Ingresa aquí para restablecer tu contraseña:\n\n{reset_link}",
-            "textiltrack@gmail.com",
-            [email],
+        send_email_sendgrid(
+            to_email=email,
+            subject="Restablecer contraseña — TextilTrack",
+            html_content=f"Ingresa aquí para restablecer tu contraseña: <a href='{reset_link}'>{reset_link}</a>"
         )
 
         messages.success(request, "Se envió un enlace a tu correo.")
