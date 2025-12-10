@@ -8,6 +8,7 @@ from usuarios.utils.email_sendgrid import send_email_sendgrid
 from django.views.decorators.http import require_POST
 from django.contrib.auth.tokens import default_token_generator
 from django.conf import settings
+import re
 
 from .forms import RegistroUsuarioForm
 from .tokens import email_verification_token
@@ -203,6 +204,20 @@ def reset_password_confirm(request, uid, token):
 
     if request.method == 'POST':
         new_password = request.POST.get('password')
+        # Validación fuerte de contraseña (igual que en forms.py)
+        errores = []
+        if len(new_password) < 8:
+            errores.append("La contraseña debe tener al menos 8 caracteres.")
+        if not re.search(r"[A-Z]", new_password):
+            errores.append("La contraseña debe incluir una mayúscula.")
+        if not re.search(r"[0-9]", new_password):
+            errores.append("La contraseña debe incluir un número.")
+        if not re.search(r"[!@#$%^&*(),.?\":{}|<>]", new_password):
+            errores.append("La contraseña debe incluir un carácter especial.")
+        if errores:
+            for err in errores:
+                messages.error(request, err)
+            return render(request, 'usuarios/reset_password_confirm.html')
         user.set_password(new_password)
         user.save()
         messages.success(request, "Tu contraseña ha sido actualizada.")
